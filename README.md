@@ -25,6 +25,17 @@ This project demonstrates a practical, hands-on approach to analyzing HTTP web s
 7. Submitted data for indexing
 
 **Step 2: Verifying Successful Ingestion**
+- Verified successful ingestion: ```index:main```
+- Verification checks:
+- Events visible in Splunk
+- Correct timestamp parsing
+- Automatic field extraction (clientip, method, uri, status)
+[successful ingestion](
+
+**Step 3: Basic Traffic Analysis**
+- Searched for Total HTTP Requests: ```index=web_logs | stats count```
+  
+
 
 
 
