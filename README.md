@@ -26,14 +26,18 @@ This project demonstrates a practical, hands-on approach to analyzing HTTP web s
 
 **Step 2: Verifying Successful Ingestion**
 - Verified successful ingestion: ```index:main```
-- Verification checks:
+**Verification checks:**
 - Events visible in Splunk
 - Correct timestamp parsing
 - Automatic field extraction (clientip, method, uri, status)
-[successful ingestion](
+![successful ingestion](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/successful%20ingestion.png)
 
 **Step 3: Basic Traffic Analysis**
 - Searched for Total HTTP Requests: ```index=web_logs | stats count```
+![basic traffic analysis](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/basic%20traffic%20analysis.png)
+
+- Searched for Requests per IP Address: ```index=main | stats count by clientip | sort -count```
+![requests per ip address](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/requests%20per%20ip%20address.png)
   
 
 
