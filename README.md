@@ -45,7 +45,7 @@ Purpose: Identify high-volume IPs and potential scanning behavior.
 ![method analysis](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/method%20analysis.png)
 
 **Step 5: HTTP Status Code Analysis**
-Spl: ```index=main | stats count by status```
+- Spl: ```index=main | stats count by status```
 ![status code analysis](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/status%20code%20analysis.png)
 **Key Indicators:**
 - 200 – Successful requests
