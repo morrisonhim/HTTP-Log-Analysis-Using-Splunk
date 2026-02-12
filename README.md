@@ -36,14 +36,16 @@ The project emphasizes practical SIEM skills, log parsing, SPL querying, and sec
 **Step 3: Basic Traffic Analysis**
 - Searched for Total HTTP Requests: ```index=web_logs | stats count```
 ![basic traffic analysis](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/basic%20traffic%20analysis.png)
+Explanation: Shows a simple SPL query and a chart/table summarizing total HTTP requests indexed. This gives a high-level view of how much traffic the log contains
 
 - Searched for Requests per IP Address: ```index=main | stats count by clientip | sort -count```
 ![requests per ip address](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/requests%20per%20ip%20address.png)
-Purpose: Identify high-volume IPs and potential scanning behavior.
+Explanation: This shows the count of requests per source IP. High counts for individual IPs can point to heavy users, bots, or scanning attempts if an IP touches many resources. This is key for spotting suspicious activity
 
 **Step 4: HTTP Method Analysis**
 - Spl: ```index=main | stats count by method```
 ![method analysis](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/method%20analysis.png)
+Explanation: Displays the distribution of HTTP methods. This helps identify what types of actions clients are performing. For example, excessive POSTs might imply form submissions, whereas many GETs might indicate normal browsing.
 
 **Step 5: HTTP Status Code Analysis**
 - Spl: ```index=main | stats count by status```
@@ -63,22 +65,20 @@ Purpose: Identify high-volume IPs and potential scanning behavior.
 | stats count by useragent
 | sort -count```
 ![suspicious user-agent analysis](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/suspicious%20user-agent%20analysis.png)
-- Flagged Indicators:
-- ```curl```
-- ```python-requests```
-- Automated or empty user-agent strings
+Explanation: Shows a breakdown of user agents making requests. Legitimate browsers will appear normally (e.g., Chrome, Firefox), whereas agents like ```curl``` or ```python-requests``` often flag scripts/bots. This helps detect automated activity.
 
 **Step 7: Web Scanning Detection**
 - Spl: ```index=main
 | stats dc(uri) as unique_uris by clientip
 | where unique_uris > 50```
 ![web scanning detection](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/web%20scanning%20detection.png)
-High URI diversity from a single IP suggests automated scanning.
+Explanatiom: High URI diversity from a single IP suggests automated scanning.
 
 **Step 8: Time-Based Analysis**
 - Spl: ```index=main
 | timechart count by status```
 ![time-based analysis](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/time-based%20analysis.png)
+Explanation: Shows requests or status codes over time. This highlights traffic patterns, peaks, and anomaly periods. Useful for spotting unusual bursts of activity or errors.
 
 **Step 9: Successful vs Error Responses**
 - Spl: ```index=web_logs
@@ -90,6 +90,7 @@ High URI diversity from a single IP suggests automated scanning.
 )
 | stats count by response_type```
 ![successful vs errors](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/successful%20vs%20errors.png)
+Explanation: Compares successful responses against error responses by grouping them (e.g., “Success”, “Client Error”, “Server Error”). This helps understand overall health and potential issues in the web service, and can trigger alerts in SOC environments.
 
 # Findings & Observations
 - Detected repeated 401, 403, and 404 responses indicating unauthorized access and resource enumeration.
