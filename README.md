@@ -73,7 +73,7 @@ Purpose: Identify high-volume IPs and potential scanning behavior.
 | stats dc(uri) as unique_uris by clientip
 | where unique_uris > 50```
 ![web scanning detection](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/web%20scanning%20detection.png)
-Purpose: Identify High URI diversity from a single IP suggests automated scanning.
+High URI diversity from a single IP suggests automated scanning.
 
 **Step 8: Time-Based Analysis**
 - Spl: ```index=main
@@ -89,14 +89,7 @@ Purpose: Identify High URI diversity from a single IP suggests automated scannin
     status>=500,"Server Error"
 )
 | stats count by response_type```
-![successful vs errors](
-
-
-**Step 10: High Request Rate from Single IP**
-- SPL: ```index=web_logs
-| stats count by clientip
-| where count > 200```
-![high requests](
+![successful vs errors](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/successful%20vs%20errors.png)
 
 # Findings & Observations
 - Detected repeated 401, 403, and 404 responses indicating unauthorized access and resource enumeration.
@@ -104,12 +97,6 @@ Purpose: Identify High URI diversity from a single IP suggests automated scannin
 - Several IP addresses accessed an unusually high number of unique URIs, strongly indicating automated web scanning or enumeration activity.
 - Time-based analysis revealed short bursts of high traffic and error responses, inconsistent with normal user behavior and indicative of possible attack activity
 - Overall findings demonstrate how Splunk enables effective detection of anomalous web activity and supports proactive web security monitoring.
-
-# Security Recommendations
-- Deploy a Web Application Firewall (WAF)
-- Implement rate limiting on authentication endpoints
-- Block malicious IP addresses and user agents
-- Enhance alerting and monitoring thresholds
 
 ## Conclusion
 This project showcases the practical use of Splunk for HTTP log analysis and web security monitoring. The
