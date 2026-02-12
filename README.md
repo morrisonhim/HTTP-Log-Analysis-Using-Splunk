@@ -1,6 +1,7 @@
 # HTTP-Log-Analysis-Using-Splunk
 # Project Overview
-This project demonstrates a practical, hands-on approach to analyzing HTTP web server logs using Splunk. The objective was to ingest a pre-existing Apache access log, extract meaningful fields, identify suspicious or anomalous activity, and generate actionable security insights. The project simulates real-world log analysis scenarios such as detecting brute-force attempts, suspicious HTTP methods, error spikes, and malicious user agents.
+This project demonstrates a hands-on analysis of HTTP web server logs using Splunk to extract meaningful insights related to web traffic behavior, performance monitoring, and security detection. The analysis simulates real-world scenarios such as identifying suspicious IP activity, abnormal HTTP methods, error spikes, and potentially malicious user agents.
+The project emphasizes practical SIEM skills, log parsing, SPL querying, and security-oriented thinking.
 
 # Objectives
 - Ingest and index HTTP access logs into Splunk
@@ -49,8 +50,12 @@ Purpose: Identify high-volume IPs and potential scanning behavior.
 ![status code analysis](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/status%20code%20analysis.png)
 **Key Indicators:**
 - 200 – Successful requests
+- 206 - Partial Content - Used for downloads
+- 301 - Moved Permanently – URL redirect (often HTTP → HTTPS)
+- 304 - Not Modified – Cached content used
 - 401 / 403 – Unauthorized access attempts
 - 404 – Resource enumeration
+- 416 - Range Not Satisfiable
 - 500 – Server-side errors
 
 **Step 6: Suspicious User-Agent Analysis**
@@ -74,6 +79,24 @@ Purpose: Identify High URI diversity from a single IP suggests automated scannin
 - Spl: ```index=main
 | timechart count by status```
 ![time-based analysis](https://github.com/morrisonhim/HTTP-Log-Analysis-Using-Splunk/blob/main/time-based%20analysis.png)
+
+**Step 9: Successful vs Error Responses**
+- Spl: ```index=web_logs
+| eval response_type=case(
+    status>=200 AND status<300,"Success",
+    status>=300 AND status<400,"Redirection",
+    status>=400 AND status<500,"Client Error",
+    status>=500,"Server Error"
+)
+| stats count by response_type```
+![successful vs errors](
+
+
+**Step 10: High Request Rate from Single IP**
+- SPL: ```index=web_logs
+| stats count by clientip
+| where count > 200```
+![high requests](
 
 # Findings & Observations
 - Detected repeated 401, 403, and 404 responses indicating unauthorized access and resource enumeration.
